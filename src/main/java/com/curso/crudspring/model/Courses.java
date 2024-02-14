@@ -14,8 +14,8 @@ public class Courses {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(length = 100, nullable = false)
+    @Column(nullable = false, length = 100)
     private String name;
-    @Column(length = 100, nullable = false)
-    private String categoy;
+    @Column(nullable = false, length = 30)
+    private String category;
 }
