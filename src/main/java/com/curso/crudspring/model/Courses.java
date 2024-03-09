@@ -1,5 +1,7 @@
 package com.curso.crudspring.model;
 
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 import org.hibernate.validator.constraints.Length;
 
 import jakarta.persistence.Column;
@@ -14,6 +16,8 @@ import lombok.Data;
 
 @Data
 @Entity
+@SQLDelete(sql = "UPDATE Courses SET status = 'Inativo' WHERE id = ? ")
+@SQLRestriction("status = 'Ativo'")
 public class Courses {
 
     @Id
@@ -31,4 +35,10 @@ public class Courses {
     @Pattern(regexp = "Back-end|Front-end")
     @Column(nullable = false, length = 10)
     private String category;
+
+    @NotNull
+    @Length(max = 10)
+    @Pattern(regexp = "Ativo|Inativo")
+    @Column(nullable = false, length = 10)
+    private String status = "Ativo";
 }
