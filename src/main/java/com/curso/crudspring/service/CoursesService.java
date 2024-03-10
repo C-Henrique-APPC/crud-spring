@@ -1,13 +1,15 @@
 package com.curso.crudspring.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import com.curso.crudspring.dto.CoursesDTO;
+import com.curso.crudspring.dto.mapper.CoursesMapper;
 import com.curso.crudspring.exception.RecordNotFoudException;
-import com.curso.crudspring.model.Courses;
 import com.curso.crudspring.repository.CoursesRepository;
 
 import jakarta.validation.Valid;
@@ -21,28 +23,31 @@ import lombok.AllArgsConstructor;
 public class CoursesService {
 
     private final CoursesRepository repository;
+    private final CoursesMapper coursesMapper;
 
-    public List<Courses> list() {
-        return this.repository.findAll();
+    public List<CoursesDTO> list() {
+        return this.repository.findAll().stream().map(coursesMapper::toDTO).collect(Collectors.toList());
     }
 
-    public Courses create(@Valid Courses entity) {
-        return this.repository.save(entity);
+    public CoursesDTO create(@Valid CoursesDTO entity) {
+        return this.coursesMapper.toDTO(this.repository.save(coursesMapper.toEntity(entity)));
     }
 
-    public Courses findById(@NotNull @Positive Long id) {
-        return this.repository.findById(id).orElseThrow(() -> new RecordNotFoudException(id));
+    public CoursesDTO findById(@NotNull @Positive Long id) {
+        return this.repository.findById(id).map(coursesMapper::toDTO)
+
+                .orElseThrow(() -> new RecordNotFoudException(id));
 
     }
 
-    public Courses update(@NotNull @Positive Long id,
-            @RequestBody @Valid Courses courses) {
+    public CoursesDTO update(@NotNull @Positive Long id,
+            @RequestBody @Valid CoursesDTO courses) {
         return this.repository.findById(id).map(
                 recordFound -> {
-                    recordFound.setName(courses.getName());
-                    recordFound.setCategory(courses.getCategory());
+                    recordFound.setName(courses.name());
+                    recordFound.setCategory(courses.category());
 
-                    return this.repository.save(recordFound);
+                    return this.coursesMapper.toDTO(this.repository.save(recordFound));
                 }).orElseThrow(() -> new RecordNotFoudException(id));
 
     }

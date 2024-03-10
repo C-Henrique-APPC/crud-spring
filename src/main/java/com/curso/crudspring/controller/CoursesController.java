@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.curso.crudspring.model.Courses;
+import com.curso.crudspring.dto.CoursesDTO;
 import com.curso.crudspring.service.CoursesService;
 
 import jakarta.validation.Valid;
@@ -32,25 +32,25 @@ public class CoursesController {
     private final CoursesService service;
 
     @GetMapping()
-    public List<Courses> list() {
+    public List<CoursesDTO> list() {
         return service.list();
     }
 
     @PostMapping()
-    public ResponseEntity<Courses> create(@RequestBody @Valid Courses entity) {
-        Courses course = this.service.create(entity);
+    public ResponseEntity<CoursesDTO> create(@RequestBody @Valid @NotNull CoursesDTO entity) {
+        CoursesDTO course = this.service.create(entity);
         return ResponseEntity.status(HttpStatus.CREATED).body(course);
     }
 
     @GetMapping("/{id}")
-    public Courses findById(@PathVariable("id") @NotNull @Positive Long id) {
+    public CoursesDTO findById(@PathVariable("id") @NotNull @Positive Long id) {
         return this.service.findById(id);
 
     }
 
     @PutMapping("/{id}")
-    public Courses update(@PathVariable("id") @NotNull @Positive Long id,
-            @RequestBody @Valid Courses courses) {
+    public CoursesDTO update(@PathVariable("id") @NotNull @Positive Long id,
+            @RequestBody @Valid CoursesDTO courses) {
         return service.update(id, courses);
     }
 
