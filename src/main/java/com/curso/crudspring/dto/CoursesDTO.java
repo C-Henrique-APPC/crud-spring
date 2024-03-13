@@ -4,16 +4,14 @@ import java.util.List;
 
 import org.hibernate.validator.constraints.Length;
 
-import com.curso.crudspring.model.Lesson;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CoursesDTO(
-                Long id,
-                @NotNull @NotBlank @Length(min = 5, max = 100) String name,
-                @NotNull String category,
-                List<Lesson> lessons
+        Long id,
+        @NotNull @NotBlank @Length(min = 5, max = 100) String name,
+        @NotNull String category,
+        List<LessonDTO> lessons
 
 ) {
 
