@@ -32,6 +32,11 @@ public class CrudSpringApplication {
 			l.setYoutubeUrl("wacht-as");
 			l.setCourses(c);
 			c.getLessons().add(l);
+			Lesson l1 = new Lesson();
+			l1.setNome("Angular");
+			l1.setYoutubeUrl("wacht-v=2");
+			l1.setCourses(c);
+			c.getLessons().add(l1);
 
 			repository.save(c);
 		};
